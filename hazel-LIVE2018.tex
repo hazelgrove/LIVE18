@@ -1,6 +1,6 @@
 \PassOptionsToPackage{svgnames,dvipsnames,svgnames}{xcolor}
 \newif\ifarxiv
-\arxivtrue
+\arxivfalse
 \ifarxiv
 \documentclass[acmsmall,nonacm]{acmart}
 \else
@@ -9,13 +9,7 @@
 \settopmatter{printfolios=false,printccs=false,printacmref=false}
 % \settopmatter{printccs=false,printacmref=false}
 \fi
-
-\ifarxiv
-\newcommand{\appendixName}{appendix}
-\else
-\newcommand{\appendixName}{supplemental appendix}
-\fi
-
+  
 %% For single-blind review submission
 %\documentclass[acmlarge,review]{acmart}\settopmatter{printfolios=true}
 %% For final camera-ready submission
@@ -188,7 +182,7 @@ moredelim=**[is][\color{red}]{SSTR}{ESTR}
 \begin{document}
 
 %% Title information
-\title{Live Functional Programming with Typed Holes}         %% [Short Title] is optional;
+\title{Live and Direct Functional Programming with Typed Holes}         %% [Short Title] is optional;
                                         %% when present, will be used in
                                         %% header instead of Full Title.
 % \titlenote{with title note}             %% \titlenote is optional;
@@ -357,23 +351,9 @@ moredelim=**[is][\color{red}]{SSTR}{ESTR}
 
 \input{intro}
 \input{examples}
-\input{calculus}
 % \input{implementation}
-\input{related-work}
-\input{discussion}
 
 %\clearpage
 \bibliography{references,all.short,hazel_NSF}
-
-\ifarxiv
-\clearpage
-\appendix
-\input{appendix-defns}
-\input{extensions}
-\else
-
-\fi
-% \input{misc}
-% \input{implementation-appendix}
 
 \end{document}
