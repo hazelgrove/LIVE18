@@ -7,9 +7,9 @@ with continuous feedback about a program's behavior as it is being edited.
 The problem is that programming languages typically assign meaning only 
  to programs that are \emph{complete}, i.e. syntactically well-formed and free
 of type errors. Consequently,    
-live feedback presented to the programmer suffers from temporal or perceptive gaps, i.e. it flickers in and out or it goes stale whenever the program becomes incomplete. 
+live feedback presented to the programmer suffers from temporal or perceptive gaps, i.e. it flickers in and out or it goes stale whenever the program is incomplete.
 
-This talk proposal reports on ongoing work being incorporated into the \Hazel live functional programming environment that confronts this ``{gap problem}'' from first principles: \Hazel assigns rich static and dynamic meaning to every incomplete program that can be constructed using \Hazel's language of structured edit actions. 
+We report on ongoing research, which is being integrated into the \Hazel live functional programming environment, that confronts this ``{gap problem}'' from first principles: \Hazel assigns rich static and dynamic meaning to every incomplete program that can be constructed using \Hazel's language of structured edit actions. 
 %
 We model incomplete functional programs, following recent work by \citet{popl-paper}, as expressions with \emph{holes}, 
 with empty holes standing for missing expressions or types, and  non-empty holes 
@@ -22,9 +22,8 @@ closure around each hole instance as it flows through the remainder of the progr
 to help the programmer decide how to fill the holes in the program. 
 Hole closures also enable a \emph{fill-and-resume} operation that 
 avoids the need to restart evaluation after edits that amount to hole filling. 
-Finally, we discuss how hole closures allow \Hazel to support \emph{live projections}---user interfaces that the programmer can directly manipulate to fill a hole within a \Hazel
-program. 
-Live projections, which can themselves contain holes, can make use of the closures associated with the hole being filled to provide 
-specialized feedback about the dynamic implications of the programmer's choices. 
+Finally, we discuss early work on how hole closures support \emph{live palettes}---user interfaces, which can themselves contain holes, that the programmer can directly manipulate to fill an expression hole. 
+A live palette can use the closures associated with the hole being filled to provide 
+specialized, concrete feedback about the dynamic implications of the programmer's choices. 
 Taken together, the result is a substantially more \emph{live and direct} typed functional programming experience.
 \end{abstract}
