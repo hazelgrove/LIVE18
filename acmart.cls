@@ -1189,7 +1189,7 @@ Computing Machinery]
   \g@addto@macro\@title{\footnotemark}%
   \if@ACM@anonymous
     \g@addto@macro\@titlenotes{%
-      \stepcounter{footnote}\footnotetext{Title note}}%
+      \stepcounter{footnote}\footnotetext{#1}}%
   \else
     \g@addto@macro\@titlenotes{\stepcounter{footnote}\footnotetext{#1}}%
   \fi}

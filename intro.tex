@@ -1,3 +1,140 @@
-\section{Introduction}
+% !TEX root = hazel-LIVE2018.tex
 
-Intro...
+\section{Introduction}
+\label{sec:intro}
+
+
+Programmers typically shift back and forth between program editing and program evaluation many times before converging upon a program that behaves as intended. 
+Live programming environments aim to support this workflow by interleaving editing and evaluation so as to   
+narrow what \citet{burckhardt2013s} call the ``temporal and perceptive gap'' between these activities.
+% In other words, the goal \IS to provide continuous feedback about the dynamic behavior of the program, in whole or in part,
+% directly alongside the program text itself.
+
+% For example, read-evaluate-print loops (REPLs) and derivatives thereof, like the IPython/Jupyter lab notebooks popular in data science~\cite{PER-GRA:2007}, allow the programmer to edit and immediately execute program fragments organized into a sequence of cells. 
+% Spreadsheets are live functional dataflow environments, with cells organized into a grid \cite{DBLP:journals/jfp/Wakeling07}. 
+% More specialized examples include live direct manipulation programming environments like SuperGlue
+% \cite{McDirmid:2007}, \sns{}~\cite{sns-pldi,sns-uist}, and the tools
+% demonstrated by \citet{victor2012inventing} in his lectures;
+% %
+% live user interface frameworks \cite{burckhardt2013s};
+% %
+% live image processing languages~\cite{DBLP:journals/vlc/Tanimoto90};
+% %
+% and live visual and auditory dataflow languages \cite{DBLP:conf/vl/BurnettAW98}, which can support live coding as a performance art.
+% Editor-integrated debuggers \cite{mccauley2008debugging} and other systems that support editing run-time state, like Smalltalk environments \cite{Goldberg:1983cn}, are also live programming environments. 
+% Live programming, in its various incarnations \cite{DBLP:journals/vlc/Tanimoto90,DBLP:conf/icse/Tanimoto13},
+%has been and continues to be an active area of research and development.
+% has been, and continues to be, an active area of research and development.
+
+% \matt{ ``The problem that specifically motivates this paper'' is a
+% really long noun phrase; the sentence is more interesting, IMO, when
+% the subject is 'programming languages' and not that noun phrase.  }
+%
+The problem at the heart of this work is that
+programming languages typically assign meaning only to {complete programs}, i.e. programs that are syntactically well-formed and free of static type and binding errors. A program editor, however, frequently encounters incomplete, and therefore meaningless, editor states. As a result, live feedback either ``flickers out'', creating a temporal gap, or it ``goes stale'', i.e. it relies on the most recent complete editor state, creating a perceptive gap because the feedback may not accurately reflect what the programmer is seeing in the editor. In some cases, these gaps can extend over substantial lengths of time.
+
+% In some cases these gaps are momentary, like while the programmer
+% %\IS entering
+% is entering  
+% a short expression. In other cases, these gaps can persist over substantial lengths of time, such as when there are many branches of a case analysis whose bodies are initially left blank or when the programmer makes a mistake.
+% %
+% Novice programmers, of course, make more mistakes \cite{mccauley2008debugging,fitzgerald2008debugging}.
+% %
+% %\matt{we are not really modeling a language with user type definitions -- what does the following sentence really add here? also, I just added this scenerio to the list above}
+% The problem is particularly pronounced for languages with rich static type systems where certain program changes, such as a change to a type definition, can cause type errors to propagate throughout the program. Throughout the process of addressing these errors, the program text remains formally meaningless. 
+% Overall, about 40\% of edits performed by Java programmers using Eclipse left the program text malformed \cite{popl-paper,6883030} and some additional number, which could not be determined from the data, were well-formed but ill-typed.
+
+ % From the perspective of the language definition, these edit states are wholly meaningless, so editor services cannot rely on the same operations and reasoning principles that would be available to, for example, the compiler. 
+
+% Despite these advances, there \IS a fundamental limitation which hinders
+% the full realization of live programming: traditional programming languages
+% cannot evaluate \emph{incomplete programs}, \ie{}, programs that are either
+% syntactically ill-formed, or ill-typed.
+% %
+% Without a well-defined semantics to dictate the treatment of incomplete
+% programs, various editor services may be provided in ad-hoc, restricted
+% forms---if available at all---during the periods of time between complete
+% program states.
+% %
+% %% ``flickering in and out''
+% %
+% %% In other words, the ``Edit-Compile-Run'' cycle routinely fails (either in the
+% %% first or second steps) during the program editing process.
+% %
+% The resulting editor experience includes services ``flickering in and out,''
+% thus introducing ``temporal and perceptive gaps'' because programmers often
+% leave a program malformed or ill-typed for extended periods of time, \eg{}~as
+% they think about what to enter at the cursor, or as they work on a different
+% part of the program.
+% %
+% These times are, arguably, when rich, live editor services would be most helpful
+% to the user.
+
+%\matt{ Below, notice the broadening from ``the problem that motivates
+%this paper is that incomplete lack dynamic meaing'' to just the
+%general quesiton of ``incomplete program meaning''--- another reason
+%to do my edit above, and remove that specific phrase.
+%}
+In recognition of this ``{gap problem}'', \citet{popl-paper} develop a static semantics (i.e. a type system) for incomplete 
+functional programs, modeling them formally as typed expressions with \emph{holes}. 
+Empty holes stand for missing expressions,
+and non-empty holes operate as ``membranes'' around static type inconsistencies 
+(i.e. they internalize the ``red underline'' that editors commonly display under a type inconsistency).
+% For editor states into this language of incomplete programs, 
+% editor services can reason about types and binding in many more situations than previously possible.
+There are several ways to determine an expression with holes from the editor state. When the editor state is a text buffer, error recovery mechanisms can insert holes implicitly \cite{DBLP:journals/siamcomp/AhoP72,charles1991practical,DBLP:conf/oopsla/KatsJNV09}. Alternatively, the language might provide explicit syntax for holes, so that the programmer can insert them either manually  
+or semi-automatically via code completion \cite{Amorim2016}. For example, GHC Haskell supports the notation \li{_u} for empty holes, where \li{u} is an optional hole name \cite{GHCHoles}. Structure editors insert explicitly represented holes fully automatically \cite{popl-paper}.
+
+%
+For the purposes of live programming, however, a static semantics does not suffice---%
+we also need a corresponding dynamic semantics that specifies how to evaluate expressions with holes. %This paper addresses this need by developing
+% a {dynamic semantics} for incomplete functional programs, 
+% starting from the static semantics developed by \citet{popl-paper}.
+%
+%Our goal in this paper \IS to develop
+
+The simplest approach would be to define a dynamic semantics that aborts with an error when evaluation reaches a hole. 
+%%%%%%%%%%%% New par:
+%
+This mirrors a workaround that programmers commonly deploy: 
+raising an exception as a placeholder, e.g. \lismall{raise Unimplemented}. 
+GHC Haskell supports this mode of evaluation for programs with holes using the \lismall{-fdefer-typed-holes} flag.\footnote{
+Without this flag, holes cause compilation to fail with an error message that reports information about each hole's type and typing context. 
+Proof assistants like Agda \cite{norell:thesis,norell2009dependently} and Idris \cite{brady2013idris} also respond to holes in this way.
+} 
+Although better than nothing, this ``exceptional approach'' to expression holes has limitations 
+within a live programming environment because 
+(1)~it provides limited information about the dynamic state of the program where the exception occurs
+(typically only a stack trace);  
+(2)~it provides no information about the behavior of the remainder of program, 
+parts of which may not depend on the missing or erroneous expression (e.g. later cells in a lab notebook, or tests of those components of the program that are already complete); and 
+(3)~it provides no means by which to resume evaluation after filling a hole.
+
+% Furthermore, exceptions can appear only in expressions, but we might also like to be able to evaluate programs that have type holes. Again, existing approaches do not support this situation well---GHC supports type holes, but compilation fails if type inference cannot automatically fill them \cite{GHCHoles}. 
+% The static semantics developed by \citet{popl-paper} derives the machinery for 
+% reasoning statically about type holes from gradual type theory, 
+% identifying the type hole with the unknown type \cite{DBLP:conf/snapl/SiekVCB15,Siek06a}.
+% %
+% As such, we might look to the dynamic semantics from
+% gradual type theory, 
+% which selectively inserts dynamic casts as necessitated by missing type information to maintain type safety. 
+% %However, this \IS again somewhat dissatisfying from the perspective of live programming because when a cast fails, evaluation again stops with 
+% However, when a cast fails, evaluation again stops with 
+% an exception and so the traditional gradual typing approaches still leave the live programming environment unable to provide rich, continuous feedback for the three reasons just enumerated.
+
+% \parahead{Contributions}
+
+This talk proposal reports on our ongoing work on developing a dynamic semantics for incomplete functional programs, starting from the static semantics developed by \citet{popl-paper},  that addresses these limitations of the exceptional approach. 
+In particular, rather than stopping when evaluation encounters an expression hole, evaluation continues ``around'' the hole so that dynamic feedback about other parts of the program remains available. 
+% For programs with unfillable type holes, casts are inserted as in gradual type theory \cite{DBLP:conf/snapl/SiekVCB15} and evaluation proceeds around failed casts in the same way. 
+Uniquely, the system tracks the closure around each expression hole instance as evaluation proceeds.  
+the live programming environment can feed relevant information from the {hole closures} to the programmer, via various editor services, as they work to fill the holes in the program.
+We 
+
+When the programmer performs an edit that fills an empty expression hole or that replaces a non-empty hole with a type-correct expression, evaluation can resume from the paused, i.e. \emph{indeterminate}, evaluation state. We call this operation \emph{fill-and-resume}. We observe that empty hole closures are closely related to metavariable closures from contextual modal type theory~(CMTT)~\cite{Nanevski2008} (which, by its Curry-Howard interpretation, provides a logical basis for reasoning about and operating on hole closures). These connections to well-established systems, together with our mechanized proofs, serve to support our claim that this approach is theoretically well-grounded.
+
+We are integrating this approach into the \Hazel programming environment being developed by \citet{HazelnutSNAPL}. \Hazel features a live context inspector that integrates static information with hole closure information and interactively presents recursive hole closures, which arise from incomplete recursive functions. The editor component of this implementation defines a language of structured edit actions, 
+based on the \Hazelnut structure editor calculus developed by \citet{popl-paper}, that inserts holes automatically to guarantee that
+every editor state has some, possibly incomplete, type. 
+The type safety invariant that we establish then guarantees that every editor state has dynamic meaning. Taken together, the result is a full solution to the gap problem, i.e. a proof-of-concept
+live functional programming environment that provides rich static and dynamic feedback that never suffers from temporal or perceptive gaps.
