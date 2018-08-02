@@ -133,11 +133,11 @@ Uniquely, the system tracks the closure (i.e. variable environment) around each 
 First, when the programmer performs an edit that fills a hole, evaluation can resume from the paused, i.e. \emph{indeterminate}, evaluation state, rather than restarting evaluation from the beginning. We call this operation, which relies critically on hole closure tracking, \emph{fill-and-resume}.
 
 Second, the live programming environment can feed relevant information from the {hole closures} to the programmer, via various editor services, as they work to fill the holes in the program. 
-This talk proposal will focus on demonstrating, by example, two examples of live, closure-driven editor services. These two editor services are being integrated into \Hazel, a live functional programming environment being developed by \citet{HazelnutSNAPL}. 
+This talk proposal will focus on demonstrating, by example, two examples of such live, closure-driven editor services. These two editor services are being integrated into \Hazel, a live functional programming environment being developed by \citet{HazelnutSNAPL} (see Sec.~\ref{sec:examples} for more on \Hazel). 
 
-The first editor service, which we detail in Sec.~\ref{sec:examples}, is the \Hazel \emph{live context inspector}, which combines static information with dynamic hole closure information and supports the interactive exploration of recursive hole closures, which arise from incomplete recursive functions. 
+The first editor service, detailed in Sec.~\ref{sec:examples}, is the \Hazel \emph{live context inspector}, which combines static information with dynamic hole closure information and supports the interactive exploration of recursive hole closures, which arise from incomplete recursive functions. 
 
 The second editor service, which we propose by providing detailed mockups in Sec.~\ref{sec:palettes}, is \Hazel's \emph{live palettes}: user-defined direct manipulation user interfaces, which might themselves contain holes, that appear within
 \Hazel programs and generate hole fillings. 
 A live palette can evaluate arbitrary expressions under the environment captured by a user-selected closure associated with the hole being filled in order to provide concrete feedback
-about the dynamic implications of the choices the palette's user has made. 
+about the dynamic implications of the choices the programmer has made in the palette UI. 
