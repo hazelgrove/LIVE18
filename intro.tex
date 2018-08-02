@@ -76,18 +76,18 @@ programming languages typically assign meaning only to {complete programs}, i.e.
 %}
 In recognition of this ``{gap problem}'', \citet{popl-paper} develop a static semantics (i.e. a type system) for incomplete 
 functional programs, modeling them formally as typed expressions with \emph{holes}. 
-Empty holes stand for missing expressions,
+Empty holes stand for missing expressions or types,
 and non-empty holes operate as ``membranes'' around static type inconsistencies 
 (i.e. they internalize the ``red underline'' that editors commonly display under a type inconsistency).
 % For editor states into this language of incomplete programs, 
 % editor services can reason about types and binding in many more situations than previously possible.
-There are several ways to determine an expression with holes from the editor state. When the editor state is a text buffer, error recovery mechanisms can insert holes implicitly \cite{DBLP:journals/siamcomp/AhoP72,charles1991practical,DBLP:conf/oopsla/KatsJNV09}. 
+There are several ways to determine an expression with holes from the state of an editor. When the editor state is a text buffer, error recovery mechanisms can insert holes implicitly \cite{DBLP:journals/siamcomp/AhoP72,charles1991practical,DBLP:conf/oopsla/KatsJNV09}. 
 Alternatively, the language might provide explicit notation for holes, so that the programmer can insert them either manually  
-or semi-automatically via code completion \cite{Amorim2016}. For example, GHC Haskell supports the notation \li{_u} for empty holes, where \li{u} is an optional hole name \cite{GHCHoles}. Structure editors insert explicitly represented holes fully automatically \cite{popl-paper}.
+or semi-automatically via code completion \cite{Amorim2016}. For example, GHC Haskell supports the notation \li{_u} for empty holes, where \li{u} is an optional hole name \cite{GHCHoles}. Structure editors insert explicit holes automatically \cite{popl-paper}.
 
 %
 For the purposes of live programming, however, a static semantics does not suffice---%
-we also need a corresponding dynamic semantics that specifies how to evaluate expressions with holes. %This paper addresses this need by developing
+we also need a corresponding dynamic semantics that specifies how to evaluate expressions with holes. This has been the focus of our recent research. %This paper addresses this need by developing
 % a {dynamic semantics} for incomplete functional programs, 
 % starting from the static semantics developed by \citet{popl-paper}.
 %
@@ -97,15 +97,15 @@ The simplest approach would be to define a dynamic semantics that aborts with an
 %%%%%%%%%%%% New par:
 %
 This mirrors a workaround that programmers commonly deploy: 
-raising an exception as a placeholder, e.g. \lismall{raise Unimplemented}. 
+raising a placeholder exception, e.g. \lismall{raise Unimplemented}. 
 GHC Haskell supports this mode of evaluation for programs with holes using the \lismall{-fdefer-typed-holes} flag.\footnote{
 Without this flag, holes cause compilation to fail with an error message that reports information about each hole's type and typing context. 
 Proof assistants like Agda \cite{norell:thesis,norell2009dependently} and Idris \cite{brady2013idris} also respond to holes in this way.
 } 
-Although better than nothing, this ``exceptional approach'' to expression holes has limitations 
-within a live programming environment because 
+Although better than nothing, this ``exceptional approach'' to evaluation with holes has limitations 
+in the setting of a live programming environment because 
 (1)~it provides no information about the behavior of the remainder of program, 
-parts of which may not depend on the missing or erroneous expression (e.g. later cells in a lab notebook, or tests of those components of the program that are already complete); 
+parts of which may not depend on the missing or erroneous expression (e.g. later cells in a lab notebook, or tests involving complete components of the program); 
 (2)~it provides limited information about the dynamic state of the program where the exception occurs
 (typically only a stack trace);  
 and 
@@ -130,14 +130,17 @@ In particular, rather than stopping when evaluation encounters an expression hol
 % For programs with unfillable type holes, casts are inserted as in gradual type theory \cite{DBLP:conf/snapl/SiekVCB15} and evaluation proceeds around failed casts in the same way. 
 Uniquely, the system tracks the closure (i.e. variable environment) around each expression hole instance as evaluation proceeds. Hole closure tracking serves several purposes. 
 
-First, when the programmer performs an edit that fills a hole, evaluation can resume from the paused, i.e. \emph{indeterminate}, evaluation state, rather than restarting evaluation from the beginning. We call this operation, which relies critically on hole closure tracking, \emph{fill-and-resume}.
+First, when the programmer performs an edit that fills a hole, evaluation can resume from the paused, i.e. \emph{indeterminate}, evaluation state, rather than restarting evaluation from the beginning. We call this operation, which we describe briefly in Sec.~\ref{sec:examples}, \emph{fill-and-resume}. 
 
 Second, the live programming environment can feed relevant information from the {hole closures} to the programmer, via various editor services, as they work to fill the holes in the program. 
-This talk proposal will focus on demonstrating, by example, two examples of such live, closure-driven editor services. These two editor services are being integrated into \Hazel, a live functional programming environment being developed by \citet{HazelnutSNAPL} (see Sec.~\ref{sec:examples} for more on \Hazel). 
+This talk proposal will focus on demonstrating, by example, two such live, closure-driven editor services. We are integrating these two editor services into \Hazel, a live functional programming environment being developed by \citet{HazelnutSNAPL} (see Sec.~\ref{sec:examples} for more background on \Hazel). 
 
-The first editor service, detailed in Sec.~\ref{sec:examples}, is the \Hazel \emph{live context inspector}, which combines static information with dynamic hole closure information and supports the interactive exploration of recursive hole closures, which arise from incomplete recursive functions. 
+The first editor service, detailed in Sec.~\ref{sec:examples}, is \Hazel's \emph{live context inspector}, which displays static information together with relevant hole closure information. 
+Programmers can rapidly switch between different closures for the selected hole and interactively explore nested hole closures, which arise from incomplete recursive functions. We give as an example two versions of quicksort.
 
 The second editor service, which we propose by providing detailed mockups in Sec.~\ref{sec:palettes}, is \Hazel's \emph{live palettes}: user-defined direct manipulation user interfaces, which might themselves contain holes, that appear within
 \Hazel programs and generate hole fillings. 
-A live palette can evaluate arbitrary expressions under the environment captured by a user-selected closure associated with the hole being filled in order to provide concrete feedback
+A live palette can evaluate an arbitrary expressions under the environment captured by a user-selected closure associated with the hole that the palette is tasked with filling in order to provide concrete feedback
 about the dynamic implications of the choices the programmer has made in the palette UI. 
+
+After describing these two editor services, we conclude in Sec.~\ref{sec:discussion} with a discussion of the state of our formal development (the details of which we omit from this submission) and future work.
