@@ -3,8 +3,7 @@
 \section{Introduction}
 \label{sec:intro}
 
-
-Programmers typically shift back and forth between program editing and program evaluation many times before converging upon a program that behaves as intended. 
+Programmers typically shift back and forth between program editing and program evaluation many times before converging upon a program that behaves as is intended. 
 Live programming environments aim to support this workflow by interleaving editing and evaluation so as to   
 narrow what \citet{burckhardt2013s} call the ``temporal and perceptive gap'' between these activities.
 % In other words, the goal \IS to provide continuous feedback about the dynamic behavior of the program, in whole or in part,
@@ -82,7 +81,8 @@ and non-empty holes operate as ``membranes'' around static type inconsistencies
 (i.e. they internalize the ``red underline'' that editors commonly display under a type inconsistency).
 % For editor states into this language of incomplete programs, 
 % editor services can reason about types and binding in many more situations than previously possible.
-There are several ways to determine an expression with holes from the editor state. When the editor state is a text buffer, error recovery mechanisms can insert holes implicitly \cite{DBLP:journals/siamcomp/AhoP72,charles1991practical,DBLP:conf/oopsla/KatsJNV09}. Alternatively, the language might provide explicit syntax for holes, so that the programmer can insert them either manually  
+There are several ways to determine an expression with holes from the editor state. When the editor state is a text buffer, error recovery mechanisms can insert holes implicitly \cite{DBLP:journals/siamcomp/AhoP72,charles1991practical,DBLP:conf/oopsla/KatsJNV09}. 
+Alternatively, the language might provide explicit notation for holes, so that the programmer can insert them either manually  
 or semi-automatically via code completion \cite{Amorim2016}. For example, GHC Haskell supports the notation \li{_u} for empty holes, where \li{u} is an optional hole name \cite{GHCHoles}. Structure editors insert explicitly represented holes fully automatically \cite{popl-paper}.
 
 %
@@ -104,10 +104,11 @@ Proof assistants like Agda \cite{norell:thesis,norell2009dependently} and Idris 
 } 
 Although better than nothing, this ``exceptional approach'' to expression holes has limitations 
 within a live programming environment because 
-(1)~it provides limited information about the dynamic state of the program where the exception occurs
+(1)~it provides no information about the behavior of the remainder of program, 
+parts of which may not depend on the missing or erroneous expression (e.g. later cells in a lab notebook, or tests of those components of the program that are already complete); 
+(2)~it provides limited information about the dynamic state of the program where the exception occurs
 (typically only a stack trace);  
-(2)~it provides no information about the behavior of the remainder of program, 
-parts of which may not depend on the missing or erroneous expression (e.g. later cells in a lab notebook, or tests of those components of the program that are already complete); and 
+and 
 (3)~it provides no means by which to resume evaluation after filling a hole.
 
 % Furthermore, exceptions can appear only in expressions, but we might also like to be able to evaluate programs that have type holes. Again, existing approaches do not support this situation well---GHC supports type holes, but compilation fails if type inference cannot automatically fill them \cite{GHCHoles}. 
@@ -124,17 +125,19 @@ parts of which may not depend on the missing or erroneous expression (e.g. later
 
 % \parahead{Contributions}
 
-This talk proposal reports on our ongoing work on developing a dynamic semantics for incomplete functional programs, starting from the static semantics developed by \citet{popl-paper},  that addresses these limitations of the exceptional approach. 
+This talk proposal is based on our ongoing effort to develop a dynamic semantics for incomplete functional programs, starting from the static semantics developed by \citet{popl-paper},  that addresses these three limitations of the exceptional approach. 
 In particular, rather than stopping when evaluation encounters an expression hole, evaluation continues ``around'' the hole so that dynamic feedback about other parts of the program remains available. 
 % For programs with unfillable type holes, casts are inserted as in gradual type theory \cite{DBLP:conf/snapl/SiekVCB15} and evaluation proceeds around failed casts in the same way. 
-Uniquely, the system tracks the closure around each expression hole instance as evaluation proceeds.  
-the live programming environment can feed relevant information from the {hole closures} to the programmer, via various editor services, as they work to fill the holes in the program.
-We 
+Uniquely, the system tracks the closure (i.e. variable environment) around each expression hole instance as evaluation proceeds. Hole closure tracking serves several purposes. 
 
-When the programmer performs an edit that fills an empty expression hole or that replaces a non-empty hole with a type-correct expression, evaluation can resume from the paused, i.e. \emph{indeterminate}, evaluation state. We call this operation \emph{fill-and-resume}. We observe that empty hole closures are closely related to metavariable closures from contextual modal type theory~(CMTT)~\cite{Nanevski2008} (which, by its Curry-Howard interpretation, provides a logical basis for reasoning about and operating on hole closures). These connections to well-established systems, together with our mechanized proofs, serve to support our claim that this approach is theoretically well-grounded.
+First, when the programmer performs an edit that fills a hole, evaluation can resume from the paused, i.e. \emph{indeterminate}, evaluation state, rather than restarting evaluation from the beginning. We call this operation, which relies critically on hole closure tracking, \emph{fill-and-resume}.
 
-We are integrating this approach into the \Hazel programming environment being developed by \citet{HazelnutSNAPL}. \Hazel features a live context inspector that integrates static information with hole closure information and interactively presents recursive hole closures, which arise from incomplete recursive functions. The editor component of this implementation defines a language of structured edit actions, 
-based on the \Hazelnut structure editor calculus developed by \citet{popl-paper}, that inserts holes automatically to guarantee that
-every editor state has some, possibly incomplete, type. 
-The type safety invariant that we establish then guarantees that every editor state has dynamic meaning. Taken together, the result is a full solution to the gap problem, i.e. a proof-of-concept
-live functional programming environment that provides rich static and dynamic feedback that never suffers from temporal or perceptive gaps.
+Second, the live programming environment can feed relevant information from the {hole closures} to the programmer, via various editor services, as they work to fill the holes in the program. 
+This talk proposal will focus on demonstrating, by example, two examples of live, closure-driven editor services. These two editor services are being integrated into \Hazel, a live functional programming environment being developed by \citet{HazelnutSNAPL}. 
+
+The first editor service, which we detail in Sec.~\ref{sec:examples}, is the \Hazel \emph{live context inspector}, which combines static information with dynamic hole closure information and supports the interactive exploration of recursive hole closures, which arise from incomplete recursive functions. 
+
+The second editor service, which we propose by providing detailed mockups in Sec.~\ref{sec:palettes}, is \Hazel's \emph{live palettes}: user-defined direct manipulation user interfaces, which might themselves contain holes, that appear within
+\Hazel programs and generate hole fillings. 
+A live palette can evaluate arbitrary expressions under the environment captured by a user-selected closure associated with the hole being filled in order to provide concrete feedback
+about the dynamic implications of the choices the palette's user has made. 

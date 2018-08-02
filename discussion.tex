@@ -1,1 +1,17 @@
 \section{Discussion}
+Although we will not give the details here, we have developed a formal semantics,
+mechanized in the Agda proof assistant, that
+specifies how to evaluate programs with holes, and that assigns formal meaning to the fill-and-resume operation.
+
+The editor component of this implementation defines a language of structured edit actions, 
+based on the \Hazelnut structure editor calculus developed by \citet{popl-paper}, that inserts holes automatically to guarantee that
+every editor state has some, possibly incomplete, type. 
+The type safety invariant that we establish then guarantees that every editor state has dynamic meaning. Taken together, the result is a full solution to the gap problem, i.e. a proof-of-concept
+live functional programming environment that provides rich static and dynamic feedback that never suffers from temporal or perceptive gaps.
+
+
+Taken together, the result is a full solution to the gap problem: all of \Hazel's
+editor services operate free of temporal or perceptive gaps, because every editor state
+has non-trivial static and dynamic meaning. The editor services that make use of the 
+tracked hole closures, in turn, provide \Hazel programmers with a uniquely 
+\emph{live and direct} typed functional programming experience. 
