@@ -72,6 +72,8 @@ For example, clicking on \li{1:3} reveals the hole closure from the \li{r_bigger
 From there, the programmer can click another hole closure, e.g. \li{1:6} to reveal the hole closure from the subsequent \li{r_smaller} recursive call as shown in Fig.~\ref{fig:qsort-sidebars} (right). 
 Notice in each case that the path from the result to the selected hole closure is reported as shown at the bottom of the context inspector in Fig.~\ref{fig:qsort-sidebars}. 
 In exploring these paths rooted at the result, the programmer can develop concrete intuitions about the recursive structure of the computation (e.g. by following through to the base case as shown in Fig.~\ref{fig:qsort-sidebars}) even before the program is complete. 
+Note the distinction between this mechanism, based on hole closures, and tracing approaches, which record the environment at every call of a function. The latter does not situate each 
+recorded environment within the result (a debugger might situate each recorded environment within an evaluation trace, which is by nature a far more complex object than the result). 
 % (We leave to future work the pedagogical question of whether such early feedback might help students understand recursion.)
 
 \begin{comment}
