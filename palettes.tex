@@ -5,28 +5,31 @@
 
 
 \begin{figure}[t]
+\vspace{-4px}
 \includegraphics[width=0.7\textwidth]{images/cutoffs-new.png}
 \caption{An example where the teacher assigns cutoffs 
 for letter grades using a domain-specific live palette.}
 \label{fig:cutoffs-example}
+\vspace{-4px}
 \end{figure}
 
 Another editor service that we are designing for integration into \Hazel 
 is the \emph{live palette} service. 
 Palettes, which were introduced in work on
-\emph{active code completion} by \citet{ActiveCodeCompletion},  allows programmers to fill typed 
-holes using specialized graphical user interfaces rather than exclusively symbolic
+\emph{active code completion} by \citet{ActiveCodeCompletion},  allow programmers to fill typed 
+holes by directly manipulating specialized graphical user interfaces rather than by exclusively entering symbolic
 code. For example, a palette might allow the programmer to 
-fill in a hole of matrix type using a tabular data entry 
-user interface, rather than by construcing a matrix 
-using the constructors of the matrix data type. \citet{ActiveCodeCompletion} elicited a large number of other
+fill in a hole of type \li{Color} using a color selection  
+user interface, rather than by construcing a \li{Color} value  
+using the constructors of that type. \citet{ActiveCodeCompletion} elicited a large number of other
 examples of data types where an alternative, graphical 
 method of constructing a value of a particular type might be
-useful.
-Palettes in the Graphite system by \citet{ActiveCodeCompletion} 
-were ephemeral, operating as a form of code completion, but projectional editors, e.g. Barista \cite{ko_barista:_2006}, often support a small number of  
-palettes (there called \emph{projections}) that persist, i.e. that appear within the code itself.
-They are also compositional, i.e. they also allow code to appear within the palette (e.g. as entries in the matrix user interface). 
+useful. Due to the large number of examples, the system in that paper, called {Graphite}, is designed to be extensible by library providers. 
+
+Palettes in {Graphite} 
+are ephemeral, operating as a form of code completion, but projectional editors, e.g. Barista \cite{ko_barista:_2006}, often support a small fixed number of  
+palettes (there called \emph{projections}) that persist, i.e. that appear within the code itself. 
+Projectional palettes also improve upon Graphite's palettes in that they are compositional, i.e. they allow code to appear within the palette itself (e.g. as entries in a matrix palette). 
 
 Like Graphite, \Hazel's palette system is extensible. 
 Like projectional palettes, \Hazel's palettes are also persistent and compositional. 

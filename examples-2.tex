@@ -32,7 +32,7 @@ as shown in Fig.~\ref{fig:qsort-type-error}.
 The result computed in Fig.~\ref{fig:qsort-example-code} recorded the environment around every
 instance of hole \li{1}, so the new result can be computed from the previous result by performing 
 contextual substitution (a concept from contextual modal type theory \cite{Nanevski2008})  and resuming evaluation, rather than restarting evaluation entirely.
-In larger examples, this \emph{fill-and-resume} operation could significantly reduce evaluation time, which is  
+For larger examples, this \emph{fill-and-resume} operation could significantly reduce evaluation time, which is  
 important to perceived liveness \cite{DBLP:conf/icse/Tanimoto13}. 
 
 The programmer appears to be on the right track conceptually
@@ -56,15 +56,14 @@ Our approach, following the prior work of \citet{popl-paper},
 is to semantically internalize the ``red outline'' around
 a type inconsistency, representing it as a \emph{non-empty hole}.
 Evaluation safely proceeds past a non-empty hole just as if it were an empty hole.
-The semantics also associates an environment with each instance of a non-empty hole,
-so we can use the live context inspector essentially as in Fig.~\ref{fig:qsort-sidebars} (not shown). 
 Evaluation proceeds inside the hole, so that 
 feedback about the type-inconsistent expression, which might ``almost'' be correct, is available. 
 In this case, the result at the bottom of Fig.~\ref{fig:qsort-type-error}
 reveals concretely that the programmer is on the right track: the list elements 
 appear in the correct order.
-They simply have not been combined correctly.
-
+They simply have not been combined correctly. 
+The semantics also associates an environment with each instance of a non-empty hole,
+so we can use the live context inspector essentially as in Fig.~\ref{fig:qsort-sidebars} (not shown). 
 
 
 % For example, consider the following two definitions.
