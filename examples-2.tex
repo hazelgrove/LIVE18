@@ -24,15 +24,15 @@ because of \emph{missing} expressions.
 %
 Now, we discuss programs that are incomplete, 
 and therefore conventionally meaningless, because of
-\emph{type inconsistencies}. 
+\emph{type inconsistencies}. In particular, 
 %
-Let us 
+let us 
 assume that the programmer has filled in hole \li{1} in the previous example 
 as shown in Fig.~\ref{fig:qsort-type-error}. 
-Because the result computed in the previous example recorded the environment around every
-instance of hole \li{1} in the result, a  new result can be computed from the previous result by performing 
+The result computed in Fig.~\ref{fig:qsort-example-code} recorded the environment around every
+instance of hole \li{1}, so the new result can be computed from the previous result by performing 
 contextual substitution (a concept from contextual modal type theory \cite{Nanevski2008})  and resuming evaluation, rather than restarting evaluation entirely.
-In larger examples, this could significantly impact evaluation time, which is  
+In larger examples, this \emph{fill-and-resume} operation could significantly reduce evaluation time, which is  
 important to perceived liveness \cite{DBLP:conf/icse/Tanimoto13}. 
 
 The programmer appears to be on the right track conceptually
@@ -54,14 +54,14 @@ whose dynamic behavior may be of interest. Evaluation can also assist the progra
 
 Our approach, following the prior work of \citet{popl-paper}, 
 is to semantically internalize the ``red outline'' around
-type inconsistencies, representing it as a \emph{non-empty hole}.
+a type inconsistency, representing it as a \emph{non-empty hole}.
 Evaluation safely proceeds past a non-empty hole just as if it were an empty hole.
 The semantics also associates an environment with each instance of a non-empty hole,
 so we can use the live context inspector essentially as in Fig.~\ref{fig:qsort-sidebars} (not shown). 
 Evaluation proceeds inside the hole, so that 
 feedback about the type-inconsistent expression, which might ``almost'' be correct, is available. 
 In this case, the result at the bottom of Fig.~\ref{fig:qsort-type-error}
-reveals that the programmer is on the right track: the list elements 
+reveals concretely that the programmer is on the right track: the list elements 
 appear in the correct order.
 They simply have not been combined correctly.
 
