@@ -21,7 +21,7 @@ holes by directly manipulating specialized graphical user interfaces rather than
 code. For example, a palette might allow the programmer to 
 fill in a hole of type \li{Color} using a color selection  
 user interface, rather than by construcing a \li{Color} value  
-using the constructors of that type. \citet{ActiveCodeCompletion} elicited a large number of other
+by manually typing the necessary code. \citet{ActiveCodeCompletion} elicited a large number of other
 examples of data types where an alternative, graphical 
 method of constructing a value of a particular type might be
 useful. Due to the large number of examples, the system in that paper, called {Graphite}, is designed to be extensible by library providers. 
@@ -37,16 +37,15 @@ Holes that appear inside palettes
 are governed by a hygiene discipline based on recent work on splicing in user-defined literal macros
 \cite{tlms-icfp18}. 
 Uniqely, \Hazel's palette system is live: the program 
-can be executed before the palette has generated code
-and the hole closures associated with the hole that the 
-palette is tasked with filling can be used by the palette
-to provide concrete feedback.
+can be evaluated before the palette has generated code
+and the palette can use the hole closures associated with the hole that it is filling 
+to provide concrete feedback to the programmer within the UI.
 
 Let us consider an illustrative domain-specific example that demonstrates
 all of these qualities: 
 Fig.~\ref{fig:cutoffs-example} shows a mockup of a palette that allows the teacher to determine grade cutoffs, represented collectively by a value of the type \li{Cutoffs} defined in the first cell, by dragging markers visually along a number line, with the student's grades superimposed. The grades are provided by filling a hole in the UI (in this case with \li{weighted_averages}, elided). 
-The program is initially evaluated as if the hole where the palette name appears, here \li{$grade_cutoffs}, is empty. 
-Any hole closures in the result are available to the palette. In this case, there is only one hole closure, from which the
+The program is initially evaluated as if the hole where the palette name appears, here \li{$grade_cutoffs}, is empty so that 
+any hole closures in the result can be made available to the palette. In this case, there is only one hole closure, from which the
 actual value of the variable \li{weighted_averages} can be 
 used by the palette to display the grades as orange points.
 It can also use this information in other ways, e.g. to point
