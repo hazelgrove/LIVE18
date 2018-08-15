@@ -1,20 +1,24 @@
 % !TEX root = hazel-LIVE2018.tex
 \section{Discussion}
 \label{sec:discussion}
-
-Although we will not give the details here, we have developed a formal semantics,
-mechanized in the Agda proof assistant, that
-specifies how to evaluate programs with holes, and that assigns formal meaning to the fill-and-resume operation.
-
-The editor component of this implementation defines a language of structured edit actions, 
-based on the \Hazelnut structure editor calculus developed by \citet{popl-paper}, that inserts holes automatically to guarantee that
-every editor state has some, possibly incomplete, type. 
-The type safety invariant that we establish then guarantees that every editor state has dynamic meaning. Taken together, the result is a full solution to the gap problem, i.e. a proof-of-concept
-live functional programming environment that provides rich static and dynamic feedback that never suffers from temporal or perceptive gaps.
-
-
-Taken together, the result is a full solution to the gap problem: all of \Hazel's
+In summary, \Hazel provides a full solution to the gap problem: all of \Hazel's
 editor services operate free of temporal or perceptive gaps, because every editor state
-has non-trivial static and dynamic meaning. The editor services that make use of the 
-tracked hole closures, in turn, provide \Hazel programmers with a uniquely 
+has non-trivial static and dynamic meaning. In particular, \Hazel can evaluate programs with holes and track the closure around each hole instance. The editor services that make use of these hole closures, in turn, provide \Hazel programmers with a uniquely 
 \emph{live and direct} typed functional programming experience. 
+
+Although we will not give the details in this short submission, we have developed a formal semantics,
+mechanized in the Agda proof assistant, that
+specifies how to evaluate programs with holes while tracking hole closures, and that assigns formal meaning to the fill-and-resume operation. The static semantics is based on the \Hazelnut calculus developed recently by \citet{popl-paper}, and the dynamic semantics combines and extend previous work on gradual type theory (to handle type holes) \cite{Siek06a,DBLP:conf/snapl/SiekVCB15} and contextual modal type theory (which provides a Curry-Howard interpretation of hole closures) \cite{Nanevski2008}. 
+
+We believe that the insights we have developed in the setting of 
+\Hazel will be immediately relevant to other
+live functional programming environments, and with further development,
+perhaps also to imperative programming environments 
+(though certain features, like fill-and-resume, rely on the fact
+that order of evaluation does not matter in the pure 
+setting). 
+
+Going forward, we hope to scale up \Hazel's live programming features  to encompass the full \Elm programming language (and perhaps further extensions thereof), and to fully realize our work on live palettes, which were outlined with mockups in Sec.~\ref{sec:palettes}. 
+Other editor services might also be able to make use of hole closures, e.g. type-and-example based program synthesis techniques \cite{Osera2015} could allow examples to be given at hole instances rather than only at function boundaries. 
+Ultimately, we believe that a principled treatment of incomplete
+programs will be essential in the next generation of live programming environments.
