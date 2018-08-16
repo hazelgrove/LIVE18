@@ -81,18 +81,21 @@ and non-empty holes operate as ``membranes'' around static type inconsistencies
 (i.e. they internalize the ``red underline'' that editors commonly display under a type inconsistency).
 % For editor states into this language of incomplete programs, 
 % editor services can reason about types and binding in many more situations than previously possible.
-There are several ways to determine an expression with holes from the state of an editor. When the editor state is a text buffer, error recovery mechanisms can insert holes implicitly \cite{DBLP:journals/siamcomp/AhoP72,charles1991practical,DBLP:conf/oopsla/KatsJNV09}. 
+%% There are several ways to determine an expression with holes from the state of an editor.
+Holes can be inserted into the program in several ways.
+When the editor state is a text buffer, error recovery mechanisms can insert holes implicitly \cite{DBLP:journals/siamcomp/AhoP72,charles1991practical,DBLP:conf/oopsla/KatsJNV09}. 
 Alternatively, the language might provide explicit notation for holes, so that the programmer can insert them either manually  
 or semi-automatically via code completion \cite{Amorim2016}. For example, GHC Haskell supports the notation \li{_u} for empty holes, where \li{u} is an optional hole name \cite{GHCHoles}. Structure editors insert explicit holes automatically \cite{popl-paper}.
 
 %
 For the purposes of live programming, however, a static semantics does not suffice---%
-we also need a corresponding dynamic semantics that specifies how to evaluate expressions with holes. This has been the focus of our recent research. %This paper addresses this need by developing
+we also need a corresponding dynamic semantics that specifies how to evaluate expressions with holes.
+%% This has been the focus of our recent research. %This paper addresses this need by developing
 % a {dynamic semantics} for incomplete functional programs, 
 % starting from the static semantics developed by \citet{popl-paper}.
 %
 %Our goal in this paper \IS to develop
-
+%
 The simplest approach would be to define a dynamic semantics that aborts with an error when evaluation reaches a hole. 
 %%%%%%%%%%%% New par:
 %
@@ -125,22 +128,38 @@ and
 
 % \parahead{Contributions}
 
-This talk proposal is based on our ongoing effort to develop a dynamic semantics for incomplete functional programs, starting from the static semantics developed by \citet{popl-paper},  that addresses these three limitations of the exceptional approach. 
+\parahead{Dynamic Semantics for Functional Programs with Holes}
+
+This proposal is based on our ongoing effort to develop a dynamic semantics for incomplete functional programs, starting from the static semantics developed by \citet{popl-paper},  that addresses these three limitations of the exceptional approach. 
 In particular, rather than stopping when evaluation encounters an expression hole, evaluation continues ``around'' the hole so that dynamic feedback about other parts of the program remains available. 
 % For programs with unfillable type holes, casts are inserted as in gradual type theory \cite{DBLP:conf/snapl/SiekVCB15} and evaluation proceeds around failed casts in the same way. 
-Uniquely, the system tracks the closure (i.e. variable environment) around each expression hole instance as evaluation proceeds. Hole closure tracking serves several purposes. 
+Uniquely, the system tracks the closure (i.e. variable environment) around each expression hole instance as evaluation proceeds.
 
-First, when the programmer performs an edit that fills a hole, evaluation can resume from the paused, i.e. \emph{indeterminate}, evaluation state, rather than restarting evaluation from the beginning. We call this operation, which we describe briefly in Sec.~\ref{sec:examples}, \emph{fill-and-resume}. 
-
+Hole closure tracking serves several purposes. 
+%
+First, when the programmer performs an edit that fills a hole, evaluation can resume from the paused, i.e. \emph{indeterminate}, evaluation state, rather than restarting evaluation from the beginning;
+%
+%% We call this operation, which we describe briefly in Sec.~\ref{sec:examples}, \emph{fill-and-resume}. 
+we call this operation \emph{fill-and-resume}. 
+%
 Second, the live programming environment can feed relevant information from the {hole closures} to the programmer, via various editor services, as they work to fill the holes in the program. 
-This talk proposal will focus on demonstrating, by example, two such live, closure-driven editor services. We are integrating these two editor services into \Hazel, a live functional programming environment being developed by \citet{HazelnutSNAPL} (see Sec.~\ref{sec:examples} for more background on \Hazel). 
 
-The first editor service, detailed in Sec.~\ref{sec:examples}, is \Hazel's \emph{live context inspector}, which displays static information together with relevant hole closure information. 
-Programmers can rapidly switch between different closures for the selected hole and interactively explore nested hole closures, which arise from incomplete recursive functions. We give as an example two versions of quicksort.
+\parahead{LIVE Talk Proposal}
 
-The second editor service, which we propose by way of detailed mockups in Sec.~\ref{sec:palettes}, is \Hazel's \emph{live palettes}: user-defined direct manipulation user interfaces, which might themselves contain holes, that appear within
-\Hazel programs and generate hole fillings. 
-A live palette can evaluate an arbitrary expression under the environment captured by a user-selected closure associated with the hole that the palette is tasked with filling in order to provide concrete feedback
-about the dynamic implications of the choices the programmer has made in the palette UI. 
+We will demonstrate two examples of live, hole-driven editor services that we are integrating into \Hazel, a live functional programming environment being developed by \citet{HazelnutSNAPL}
+(more background on \Hazel below). 
+%% (see Sec.~\ref{sec:examples} for more background on \Hazel). 
 
-After describing these two editor services, we conclude in Sec.~\ref{sec:discussion} with a discussion of the state of the formal development underlying these editor services and future work.
+The first editor service is \Hazel's \emph{live context inspector} (described in Sec.~\ref{sec:examples}),
+which displays static information together with relevant hole closure information. 
+Programmers can rapidly switch between different closures for the selected hole and interactively explore nested hole closures, which arise from incomplete recursive functions.
+%% We give as an example two versions of quicksort.
+
+The second editor service is \Hazel's \emph{live palettes} (described using mockups in Sec.~\ref{sec:palettes}), which are user-defined direct manipulation user interfaces that appear within \Hazel programs and generate hole fillings. 
+%% A live palette can evaluate an arbitrary expression under the environment captured by a user-selected closure associated with the hole that the palette is tasked with filling in order to provide concrete feedback
+A palette has access to the environment captured by a hole closure, so it can provide concrete feedback about the dynamic implications of choices made by the programmer in the palette UI.
+Interestingly, palettes may themselves contain holes, to be filled using nested palettes.
+
+The live context inspector has been implemented already, and we expect an initial version of live palettes to be ready for demonstration at the workshop.
+
+%% After describing these two editor services, we conclude in Sec.~\ref{sec:discussion} with a discussion of the state of the formal development underlying these editor services and future work.
