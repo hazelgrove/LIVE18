@@ -14,14 +14,14 @@ The \Hazel live functional programming environment addresses this ``{gap problem
 An incomplete program is represented, following recent work by \citet{popl-paper}, as an expression with \emph{holes}, where empty holes stand for missing expressions or types, and  non-empty holes 
 operate as membranes around type inconsistencies. 
 %
-Rather than aborting when evaluation encounters any of these holes, as in
-several existing systems, evaluation continues while recording the 
-closure around each hole instance. 
+Rather than aborting evaluation when encountering a hole,
+our approach records the environment around the hole instance---forming
+a \emph{hole closure}---and then evaluates ``around'' it.
 These hole closures enable a \emph{fill-and-resume} operation that 
 avoids the need to restart evaluation after edits that amount to hole filling. 
-Furthermore, various editor services can report information from these hole closures 
+Furthermore, various editor services can report information from hole closures 
 to help the programmer decide how to fill the corresponding holes. 
-We discuss two examples of these live, hole-driven editor services. 
+In this presentation, we describe two examples of live, hole-driven editor services.
 First, we discuss \Hazel's \emph{live context inspector}, which allows the programmer to explore 
 values from relevant hole closures when the cursor is on a hole in the program. 
 Second, we discuss early work on \emph{live palettes}---user interfaces, which can themselves contain holes, that the programmer can directly manipulate to fill an expression hole. 
