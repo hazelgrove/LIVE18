@@ -20,7 +20,7 @@ Palettes, which were introduced in work on
 holes by directly manipulating specialized graphical user interfaces rather than only with text edits. For example, a palette might allow the programmer to 
 fill a hole of type \li{Color} using a color selection  
 user interface.
-\citet{ActiveCodeCompletion} elicited examples of data types where alternative GUIs
+\citet{ActiveCodeCompletion} elicited several examples of data types where alternative GUIs
 for constructing values might be useful.
 %% Due to the large number of examples,
 The system in that paper, called {Graphite}, is designed to be extensible by library providers. 
@@ -38,7 +38,7 @@ are governed by a hygiene discipline based on recent work on splicing in user-de
 Uniquely, \Hazel's palette system is live: the program 
 can be evaluated before the palette has generated code
 and the palette can use the hole closures associated with the hole that it is filling 
-to provide concrete feedback to the programmer within the UI.
+to provide concrete feedback to the programmer within the palette UI.
 
 Let us consider an illustrative domain-specific example that demonstrates
 all of these qualities: 
@@ -53,12 +53,12 @@ it. If there were multiple closures available, the user could
 toggle between them using the live palette inspector as discussed in the previous section.
 
 %
-The implementation of each palette, e.g. \li{grade_cutoffs}, is required to implement a
+We omit the implementation of \li{$grade_cutoffs} for concision, but to briefly summarize: the implementation of each palette is required to implement a
 Model-Update-View interface, following the Elm architecture \cite{ElmArchitecture}. 
 In the \li{view} function that generates the user
 interface as a value of type \li{Html}, the palette may request that a nested hole with
-a specified expected type be rendered using the \li{HtmlHole} constructor of the \li{Html} type. When the cursor is in this hole, \Hazel provides all of the usual editor services based on the specified type. Values of the expressions in these holes 
-can be referred to, relative to the current user-selected closure, for use by the \li{view} function (here, to generate the orange dots and red warning). 
+a specified expected type be rendered using the \li{HtmlHole} constructor of the \li{Html} type. When the cursor is in this hole, \Hazel provides all of the usual editor services based on the specified type. The expressions in these holes 
+can be evaluated relative to the current user-selected closure and the resulting values are available for use by the \li{view} function (here, to generate the orange dots and red warning). 
 Each palette must
 also implement a \li{to_exp} function that produces the final
 expression to fill the hole, much like a macro (see \cite{tlms-icfp18}).
