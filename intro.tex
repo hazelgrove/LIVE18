@@ -83,12 +83,12 @@ and non-empty holes operate as ``membranes'' around static type inconsistencies
 % editor services can reason about types and binding in many more situations than previously possible.
 %% There are several ways to determine an expression with holes from the state of an editor.
 Holes can be inserted into the program in several ways.
-When the editor state is a text buffer, error recovery mechanisms can insert holes implicitly \cite{DBLP:journals/siamcomp/AhoP72,charles1991practical,DBLP:conf/oopsla/KatsJNV09}. 
+In systems where the editor state is a text buffer, error recovery mechanisms can insert holes implicitly \cite{DBLP:journals/siamcomp/AhoP72,charles1991practical,DBLP:conf/oopsla/KatsJNV09}. 
 Alternatively, the language might provide explicit notation for holes, so that the programmer can insert them either manually  
-or semi-automatically via code completion \cite{Amorim2016}. For example, GHC Haskell supports the notation \li{_u} for empty holes, where \li{u} is an optional hole name \cite{GHCHoles}. Structure editors insert explicit holes automatically \cite{popl-paper}.
+or semi-automatically via code completion \cite{Amorim2016}. For example, GHC Haskell supports the notation \li{_u} for empty holes, where \li{u} is an optional hole name \cite{GHCHoles}. Structure editors insert explicitly represented holes fully automatically \cite{popl-paper}.
 
 %
-For the purposes of live programming, however, a static semantics does not suffice---%
+For the purposes of live programming, however, a static semantics like that developed by \citet{popl-paper} does not suffice---%
 we also need a corresponding dynamic semantics that specifies how to evaluate expressions with holes.
 %% This has been the focus of our recent research. %This paper addresses this need by developing
 % a {dynamic semantics} for incomplete functional programs, 
@@ -146,7 +146,7 @@ Second, the live programming environment can feed relevant information from the 
 
 \parahead{LIVE Talk Proposal}
 
-We will demonstrate two examples of live, hole-driven editor services that we are integrating into \Hazel, a live functional programming environment being developed by \citet{HazelnutSNAPL}
+We will demonstrate the basics of our approach as well as two examples of live, hole-driven editor services that we are integrating into \Hazel, a live functional programming environment being developed by \citet{HazelnutSNAPL}
 (more background on \Hazel below). 
 %% (see Sec.~\ref{sec:examples} for more background on \Hazel). 
 
@@ -157,8 +157,8 @@ Programmers can rapidly switch between different closures for the selected hole 
 
 The second editor service is \Hazel's \emph{live palettes} (described using mockups in Sec.~\ref{sec:palettes}), which are user-defined direct manipulation user interfaces that appear within \Hazel programs and generate hole fillings. 
 %% A live palette can evaluate an arbitrary expression under the environment captured by a user-selected closure associated with the hole that the palette is tasked with filling in order to provide concrete feedback
-A palette has access to the environment captured by a hole closure, so it can provide concrete feedback about the dynamic implications of choices made by the programmer in the palette UI.
-Interestingly, palettes may themselves contain holes, to be filled using nested palettes.
+A palette has access to the environment captured by associated hole closures, so it can provide concrete feedback about the dynamic implications of choices made by the programmer in the palette UI.
+Palettes may themselves contain holes, which may be filled using nested palettes.
 
 The live context inspector has been implemented already, and we expect an initial version of live palettes to be ready for demonstration at the workshop.
 
