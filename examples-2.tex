@@ -44,11 +44,12 @@ performs list concatenation, but the pivot is an integer.
 Most compilers and editors will report a static error message
 to the programmer in this case, and \Hazel 
 follows suit in the type inspector (shown inset in Fig.~\ref{fig:qsort-type-error}). 
-However, our argument is that the presence of a static type error should not cause all feedback about 
-the dynamic behavior of the program to ``flicker out'' or ``go stale'' --
-after all, there are perfectly meaningful parts of the program (both nearby
+However, in our approach, the presence of a static type error need not cause all feedback about
+the dynamic behavior of the program to ``flicker out'' or ``go stale''--after
+all, there are perfectly meaningful parts of the program (both nearby
 and far away from the error) 
-whose dynamic behavior may be of interest. Evaluation can also assist the programmer in understanding the type error by presenting concrete values \cite{Seidel2016}.
+whose dynamic behavior may be of interest.
+Concrete values from evaluation can also help explain the type error \cite{Seidel2016}.
 % After all,
 % the error is localized and there is perfectly good code elsewhere 
 % in the program (if not nearby, then perhaps far away).
@@ -57,7 +58,7 @@ Our approach, following the prior work of \citet{popl-paper},
 is to semantically internalize the ``red outline'' around
 a type inconsistency, representing it as a \emph{non-empty hole}.
 Evaluation safely proceeds past a non-empty hole just as if it were an empty hole.
-Evaluation proceeds inside the hole, so that 
+Evaluation also proceeds inside the hole, so that
 feedback about the type-inconsistent expression, which might ``almost'' be correct, is available. 
 In this case, the result at the bottom of Fig.~\ref{fig:qsort-type-error}
 reveals concretely that the programmer is on the right track: the list elements 
