@@ -14,7 +14,7 @@ The \Hazel live functional programming environment addresses this ``{gap problem
 An incomplete program is represented as an expression with \emph{holes}, where empty holes stand for missing expressions or types, and  non-empty holes 
 operate as membranes around type inconsistencies. 
 %
-Rather than aborting evaluation when encountering a hole,
+Rather than aborting evaluation when encountering a hole instance,
 our approach records the environment around the hole instance---forming
 a \emph{hole closure}---and then evaluates ``around'' it.
 These hole closures enable a \emph{fill-and-resume} operation that 
