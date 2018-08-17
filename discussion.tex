@@ -10,17 +10,17 @@ has non-trivial static and dynamic meaning. In particular, \Hazel can evaluate p
 In a separate technical paper,
 we have developed a formal semantics,
 mechanized in the Agda proof assistant, that
-specifies how to evaluate programs with holes while tracking hole closures, and that assigns formal meaning to the fill-and-resume operation. The static semantics is based on the \Hazelnut calculus developed recently by \citet{popl-paper}, and the dynamic semantics combines and extend previous work on gradual type theory (to handle type holes) \cite{Siek06a,DBLP:conf/snapl/SiekVCB15} and contextual modal type theory (which provides a Curry-Howard interpretation of hole closures) \cite{Nanevski2008}. 
+specifies how to evaluate programs with holes while tracking hole closures, and that assigns formal meaning to the fill-and-resume operation. The static semantics is based on the \Hazelnut calculus developed recently by \citet{popl-paper}, and the dynamic semantics combines and extends previous work on gradual type theory (to handle type holes) \cite{Siek06a,DBLP:conf/snapl/SiekVCB15} and contextual modal type theory (which provides a Curry-Howard interpretation of hole closures) \cite{Nanevski2008}. 
 
 We believe that the insights we have developed in the setting of 
 \Hazel will be immediately relevant to other
 live functional programming environments, and with further development,
 perhaps also to imperative programming environments 
 (though certain features, like fill-and-resume, rely on the fact
-that order of evaluation does not matter in the pure 
+that order of evaluation does not matter in the pure functional 
 setting). 
 
-Going forward, we hope to scale up \Hazel's live programming features  to encompass the full \Elm{} programming language (and perhaps further extensions), and to fully realize our work on live palettes, which were outlined with mockups in Sec.~\ref{sec:palettes}. 
+Going forward, we hope to scale up \Hazel's live programming features  to encompass the full \Elm{} programming language (and perhaps further extensions), and to fully realize our work on live palettes, which we  outlined with mockups in Sec.~\ref{sec:palettes}. 
 Other editor services might also be able to make use of hole closures, e.g. type-and-example based program synthesis techniques \cite{Osera2015} could allow examples to be given at hole instances rather than only at function boundaries. 
 Ultimately, we believe that a principled treatment of incomplete
-programs will be essential in the next generation of live programming environments.
+programs will be essential to the operation of the next generation of live programming environments.
