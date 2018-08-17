@@ -6,7 +6,9 @@ editor services operate free of temporal or perceptive gaps, because every edito
 has non-trivial static and dynamic meaning. In particular, \Hazel can evaluate programs with holes and track the closure around each hole instance. The editor services that make use of these hole closures, in turn, provide \Hazel programmers with a uniquely 
 \emph{live and direct} typed functional programming experience. 
 
-Although we will not give the details in this short submission, we have developed a formal semantics,
+%% Although we will not give the details in this short submission,
+In a separate technical paper,
+we have developed a formal semantics,
 mechanized in the Agda proof assistant, that
 specifies how to evaluate programs with holes while tracking hole closures, and that assigns formal meaning to the fill-and-resume operation. The static semantics is based on the \Hazelnut calculus developed recently by \citet{popl-paper}, and the dynamic semantics combines and extend previous work on gradual type theory (to handle type holes) \cite{Siek06a,DBLP:conf/snapl/SiekVCB15} and contextual modal type theory (which provides a Curry-Howard interpretation of hole closures) \cite{Nanevski2008}. 
 
@@ -18,7 +20,7 @@ perhaps also to imperative programming environments
 that order of evaluation does not matter in the pure 
 setting). 
 
-Going forward, we hope to scale up \Hazel's live programming features  to encompass the full \Elm programming language (and perhaps further extensions thereof), and to fully realize our work on live palettes, which were outlined with mockups in Sec.~\ref{sec:palettes}. 
+Going forward, we hope to scale up \Hazel's live programming features  to encompass the full \Elm{} programming language (and perhaps further extensions thereof), and to fully realize our work on live palettes, which were outlined with mockups in Sec.~\ref{sec:palettes}. 
 Other editor services might also be able to make use of hole closures, e.g. type-and-example based program synthesis techniques \cite{Osera2015} could allow examples to be given at hole instances rather than only at function boundaries. 
 Ultimately, we believe that a principled treatment of incomplete
 programs will be essential in the next generation of live programming environments.
