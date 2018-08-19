@@ -1,9 +1,8 @@
-<html>
-	<head>
+<html><head>
 		<title>assign.html</title>
-		<link rel="stylesheet" type="text/css" href="style.css" />
+		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
-	<body>
+	<body spellcheck="false">
 		<div id="top-bar">
 			<div id="hazel-logo">Hazel</div>
 			<div id="worksheet-name">Grading Notebook for CS150
@@ -16,30 +15,19 @@
 			</div>
 		</div>
 		<div id="main-parent">
-			<div id="left-area">
+			<div id="left-area" contenteditable="true" spellcheck="false">
 				<div id="cells">
 					<!-- <h1>Grading Notebook for CS 150</h1> -->
 					<div class="cell">
 						<div class="line"><span class="keyword">type</span> Cutoffs = { <span class="label">a</span>: <span class="keyword">float</span>, <span class="label">b</span>: <span class="keyword">float</span>, <span class="label">c</span>: <span class="keyword">float</span>, <span class="label">d</span>: <span class="keyword">float</span>, <span class="label">f</span>: <span class="keyword">float</span> }</div>
 					</div>
 					<div class="cell">
-						<div class="line"><span class="keyword">palette</span> $grade_cutoffs <span class="keyword">at</span> Cutoffs {</div>
-						<div class="line">  <span class="keyword">type</span> Model = <span class="ellipsis">...</span></div>
-						<div class="line">  <span class="keyword">type</span> Msg = <span class="ellipsis">...</span></div>
-						<div class="line">  init_model = <span class="ellipsis">...</span></div>
-						<div class="line">  update_model(msg, model) = <span class="ellipsis">...</span></div>
-						<div class="line">  view_model(live_env, model) = </span></div>
-						<div class="line">    hole_spec = { id: <span class="string">"data"</span>, ty: TList(TFloat) }</div>
-						<div class="line">    data_input = Div [] [Text <span class="string">"data = "</span>; HtmlHole hole_spec]</div>
-						<div class="line">    data_val = Env.run env (EHoleRef <span class="string">"data"</span>)</div>
-						<div class="line">    <span class="ellipsis">...</span></div>
-						<div class="line">  to_exp(model) = <span class="ellipsis">...</span></div>
-						<div class="line">};</div>
+						<div class="line"><span class="keyword">palette</span> $grade_cutoffs <span class="keyword">at</span> Cutoffs { <span style="background-color: rgba(255, 255, 255, 0.75); color: gray;">... </span>};</div>
 					</div>
 					<div class="cell">
 						<div class="line">weighted_averages : List(<span class="keyword">float</span>) = <span class="ellipsis">...</span></div>
 						<div class="line">cutoffs : Cutoffs = <span class="palette-call">$grade_cutoffs</span>;</div>
-						<div class="palette" style="width: 490px">
+						<div class="palette" style="width: 490px;padding-bottom: 2px;">
 							<img src="cutoffs.png" style="width: 480px">
 						</div>
 					</div>
@@ -78,8 +66,8 @@
 				<div class="panel-heading">Suggestions:</div>
 				<div id="action-suggestions">
 					<div class="suggestion"><span class="code">g.<span class="hole">␣</span></span></div>
-					<div class="suggestion subsuggestion"><span class="code">g.<span class="label">hw1</span></div>
-					<div class="suggestion subsuggestion selected"><span class="code">g.<span class="label">hw2</span></div>
+					<div class="suggestion subsuggestion"><span class="code">g.<span class="label">hw1</span></span></div>
+					<div class="suggestion subsuggestion selected"><span class="code">g.<span class="label">hw2</span></span></div>
 					<div class="environment-entry subsubsuggestion">
 							<div class="environment-entry-val">= 93.0</div>
 							<div class="environment-entry-instance">@<span class="hole instance">␣<span class="hole-name">c.1</span></span></div>
@@ -88,7 +76,7 @@
 							<div class="environment-entry-val">= 75.0</div>
 							<div class="environment-entry-instance">@<span class="hole instance">␣<span class="hole-name">c.2</span></span></div>
 					</div>
-					<div class="suggestion subsuggestion"><span class="code">g.<span class="label">hw3</span></div>
+					<div class="suggestion subsuggestion"><span class="code">g.<span class="label">hw3</span></span></div>
 					<div class="suggestion subsuggestion faded text">More...</div>
 					<div class="suggestion text">Refactor to <span class="keyword code">let</span></div>
 					<div class="suggestion text">Navigate to previous hole</div>
@@ -96,5 +84,6 @@
 				</div>
 			</div>
 		</div>
-	</body>
-</html>
+	
+
+</div></body></html>
